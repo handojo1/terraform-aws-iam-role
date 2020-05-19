@@ -1,31 +1,29 @@
 # Trust relationship policy document for user that requires MFA to be enabled.
 data "aws_iam_policy_document" "with_mfa" {
-  statement = {
+  statement {
     actions = ["sts:AssumeRole"]
 
-    principals = {
+    principals {
       type        = "AWS"
-      identifiers = ["${var.trusted_users}"]
+      identifiers = "${var.trusted_users}"
     }
 
-    condition = [
-      {
-        test     = "Bool"
-        variable = "aws:MultiFactorAuthPresent"
-        values   = ["true"]
-      },
-    ]
+    condition {
+      test     = "Bool"
+      variable = "aws:MultiFactorAuthPresent"
+      values   = ["true"]
+    }
   }
 }
 
 # Trust relationship policy document for user that cannot enable MFA.
 data "aws_iam_policy_document" "without_mfa" {
-  statement = {
+  statement {
     actions = ["sts:AssumeRole"]
 
-    principals = {
+    principals {
       type        = "AWS"
-      identifiers = ["${var.trusted_users}"]
+      identifiers = "${var.trusted_users}"
     }
   }
 }
